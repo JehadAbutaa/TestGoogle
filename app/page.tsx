@@ -11,11 +11,30 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle login
-    console.log("Login with:", { email, password })
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("/api/login", { // Replace with your API endpoint
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Login failed");
+    }
+
+    const data = await response.json();
+    console.log("Login successful:", data);
+    // Redirect or show success message here
+  } catch (error) {
+    console.error("Error:", error);
   }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
