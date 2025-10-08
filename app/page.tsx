@@ -14,25 +14,35 @@ export default function LoginPage() {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
   try {
-    const response = await fetch("/api/login", { // Replace with your API endpoint
+    const response = await fetch("https://reqres.in/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     });
 
-    if (!response.ok) {
-      throw new Error("Login failed");
-    }
-
     const data = await response.json();
-    console.log("Login successful:", data);
-    // Redirect or show success message here
+    console.log("Response:", data);
+
+    if (response.ok) {
+      alert("✅ Login successful! Token: " + data.token);
+    } else {
+      alert("❌ Login failed: " + (data.error || "Unknown error"));
+    }
   } catch (error) {
     console.error("Error:", error);
+    alert("❌ Network error");
   }
+};
+
 };
 
 
